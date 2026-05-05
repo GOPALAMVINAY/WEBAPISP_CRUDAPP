@@ -1,0 +1,6 @@
+@WEBAPISP_CRUDAPP_HostAddress = http://localhost:5263
+
+GET {{WEBAPISP_CRUDAPP_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

@@ -11,9 +11,11 @@ namespace WEBAPISP_CRUDAPP.Controllers
     public class APTController : ControllerBase
     {
         private readonly AptonlineContext _context;
-        public APTController(AptonlineContext context)
+        private readonly IHttpClientFactory _httpClient;
+        public APTController(AptonlineContext context, IHttpClientFactory  httpClient)
         {
             _context = context;
+            _httpClient = httpClient;
         }
         [HttpGet]
         [Route("GetAll")]
@@ -64,5 +66,15 @@ namespace WEBAPISP_CRUDAPP.Controllers
             var result = _context.Database.ExecuteSqlRaw("Exec sp_deleteaptest @id", new SqlParameter("@id", id));
           return Ok("Delete Sucessfully");
         }
+
+        [HttpGet]
+        [Route("GetAllFromExternalAPI")]
+        public async Task<ActionResult> GetAllFromExternalAPI()
+        {
+            var httpClient =  _httpClient.CreateClient();
+            string response = await httpClient.GetStringAsync("https://api.restful-api.dev/objects");
+            return Ok(response);
+        }
+
     }
 }
